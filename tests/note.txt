@@ -1,0 +1,5 @@
+A simple note to be packed.
+
+For testing purposes.
+
+Create a package and put this note and gif image inside.
