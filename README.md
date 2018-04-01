@@ -8,7 +8,9 @@ Paq is a command line utility that uses arguments for preforming tasks.
 
 ### Usage
 
-Create a test package:
+Create a package using files in tests directory:
+
+![tests directory files](https://epiqm.github.io/static/img/paq-files.png "tests directory files")
 
 ```
 $ ./paq ./tests/* -o testarchive.pq
@@ -17,10 +19,16 @@ done.
 
 Check newly created package named testarchive.pq:
 
+![test package](https://epiqm.github.io/static/img/paq-archive.png "test package")
+
 ```
 $ ls -i | grep "test"
 4965616 testarchive.pq
 ```
+
+Contents of testarchive.pq:
+
+![package open in dhex](https://epiqm.github.io/static/img/paq-dhex.png "package open in dhex")
 
 Unpack testarchive.pq package:
 
@@ -38,13 +46,7 @@ After successful unpack you are able to see a pink rabbit picture.
 
 Also check the text file named note.txt, content should be equal to:
 
-```
-A simple note to be packed.
-
-For testing purposes.
-
-Create a package and put this note and png image inside.
-```
+![note text](https://epiqm.github.io/static/img/paq-notetxtbb.png "note text")
 
 Delete files used for this example:
 
