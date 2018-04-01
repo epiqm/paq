@@ -52,6 +52,18 @@ Delete files used for this example:
 $ rm ./testarchive.pq ./note.txt ./rabbit.png
 ```
 
+Unpack several packages into a single directory:
+
+```
+$ ./paq unpack package.pq package.pq2
+package.pq:
+  note.txt (109 bytes, offset 46)
+  rabbit.png (18170 bytes, offset 155)
+package.pq2:
+  MIT.md (1070 bytes, offset 24)
+done.
+```
+
 ### Building
 
 Install Go >=1.8, manage projects path environment variable, clone the repository to src directory.

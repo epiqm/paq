@@ -7,6 +7,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -68,6 +69,34 @@ func Pack(ofname string, fplist []string) (result bool) {
 	var pind int = 1           // assuming its first package in current directory
 	var efname string = ofname // save original package name for iterations
 
+	for _, v := range fplist {
+		// open file to get stats
+		finfo, err := os.Stat(v)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		// check if argument is a directory
+		if finfo.IsDir() {
+			dirFiles, err := ioutil.ReadDir(v)
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+
+			for _, f := range dirFiles {
+				// strip suffix slash
+				if strings.HasSuffix(v, SEP) {
+					v = v[:len(v)-1]
+				}
+
+				// append each file in directory
+				fplist = append(fplist, fmt.Sprintf("%s%s%s", v, SEP, f.Name()))
+			}
+		}
+	}
+
 	// check packages with same filename
 	for {
 		if _, err := os.Stat(ofname); os.IsNotExist(err) {
@@ -110,6 +139,11 @@ func Pack(ofname string, fplist []string) (result bool) {
 			return
 		}
 
+		// skip if its a directory
+		if finfo.IsDir() {
+			continue
+		}
+
 		// create meta for every single unit
 		ameta = ameta + fmt.Sprintf("://%s>>%d?", finfo.Name(), finfo.Size())
 	}
@@ -124,6 +158,18 @@ func Pack(ofname string, fplist []string) (result bool) {
 	// second pass:
 	// copy files/directories content to package
 	for _, v := range fplist {
+		// open file to get stats
+		finfo, err := os.Stat(v)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		// skip if its a directory
+		if finfo.IsDir() {
+			continue
+		}
+
 		// open file for reading
 		fi, err := os.Open(v)
 		if err != nil {
@@ -397,6 +443,9 @@ func main() {
 		if cmd == "pack" {
 			if Pack(ofname, fplist) == true {
 				fmt.Println(SUCCESS)
+			} else {
+				// remove temp package
+				os.Remove(ofname)
 			}
 		} else if cmd == "scan" {
 			if Scan(fplist, &RawPackage) == true {
