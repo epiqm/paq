@@ -12,6 +12,7 @@ Create a test package:
 
 ```
 $ ./paq ./tests/* -o testarchive.pq
+done.
 ```
 
 Check newly created package named testarchive.pq:
@@ -28,6 +29,7 @@ $ ./paq unpack testarchive.pq
 testarchive.pq:
   note.txt (109 bytes, offset 46)
   rabbit.png (18170 bytes, offset 155)
+done.
 ```
 
 Check rabbit.png with image viewer or other application you use for browsing images.
@@ -41,8 +43,7 @@ A simple note to be packed.
 
 For testing purposes.
 
-Create a package and put this note and gif image inside.
-
+Create a package and put this note and png image inside.
 ```
 
 Delete files used for this example:
