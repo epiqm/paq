@@ -50,8 +50,8 @@ type Package struct {
 // and total size (in bytes).
 type Meta struct {
 	Name   string
-	Offset int
-	Size   int
+	Offset int64
+	Size   int64
 }
 
 var (
@@ -243,7 +243,7 @@ func Scan(fplist []string, RawPackage *Package) (result bool) {
 		buf := make([]byte, 1)
 
 		var meta string
-		var headerlen int = 6
+		var headerlen int64 = 6
 
 		for {
 			n, err := fi.Read(buf) // read a byte from buffer
@@ -259,7 +259,7 @@ func Scan(fplist []string, RawPackage *Package) (result bool) {
 			}
 
 			// calculate header length
-			headerlen += n
+			headerlen += int64(n)
 
 			meta += string(buf[:n])             // append meta content
 			match := strings.Index(meta, "?;;") // meta end separator
@@ -271,14 +271,19 @@ func Scan(fplist []string, RawPackage *Package) (result bool) {
 			}
 		}
 
+		if headerlen == finfo.Size() {
+			fmt.Sprintf("  %s", "package does not contain meta header")
+			return false
+		}
+
 		// split meta content using delimiter
 		fsplit := strings.Split(meta, "?")
 		if len(fsplit) > 0 {
 			poffset := headerlen
 
-			var fid int     // index of file
-			var foffset int // offset in bytes
-			var fsize int   // total size in bytes
+			var fid int       // index of file
+			var foffset int64 // offset in bytes
+			var fsize int64   // total size in bytes
 
 			// iteratre through single meta table element
 			for _, mv := range fsplit {
@@ -294,7 +299,7 @@ func Scan(fplist []string, RawPackage *Package) (result bool) {
 					}
 
 					// convert size to bytes integer
-					fsize, err = strconv.Atoi(string(metaInfo[0][2]))
+					fsize, err = strconv.ParseInt(metaInfo[0][2], 10, 64)
 					if err != nil {
 						fmt.Println(err)
 						return
@@ -362,7 +367,7 @@ func Unpack(fplist []string) (result bool) {
 		fi.Seek(int64(fa.Offset), os.SEEK_SET)
 
 		// validate final size
-		var bufsize int = 1024
+		var bufsize int64 = 1024
 		if bufsize > fa.Size {
 			bufsize = fa.Size
 		}
@@ -386,7 +391,7 @@ func Unpack(fplist []string) (result bool) {
 			}
 
 			// if processed or overflow
-			if n == 0 || n >= fa.Size {
+			if n == 0 || int64(n) >= fa.Size {
 				break
 			}
 		}
