@@ -334,6 +334,8 @@ func Unpack(fplist []string, ofname string) (result bool) {
 		if _, err := os.Stat(ofname); os.IsNotExist(err) {
 			os.MkdirAll(ofname, os.ModePerm);
 		}
+	} else if len(ofname) == 0 {
+		ofname = "."
 	}
 
 	// go through the specified files
