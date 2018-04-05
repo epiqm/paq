@@ -66,7 +66,7 @@ func TestUnpack(t *testing.T) {
 	packageNames = append(packageNames, "test.pq")
 
 	// test unpack function
-	result := Unpack(packageNames)
+	result := Unpack(packageNames, "./")
 	if result != true {
 		t.Error("Failed to extract package.")
 	}

@@ -332,7 +332,7 @@ func Unpack(fplist []string, ofname string) (result bool) {
 
 	if len(ofname) > 0 {
 		if _, err := os.Stat(ofname); os.IsNotExist(err) {
-			os.MkdirAll(ofname, os.ModePerm);
+			os.MkdirAll(ofname, os.ModePerm)
 		}
 	} else if len(ofname) == 0 {
 		ofname = "."
@@ -411,9 +411,9 @@ func Unpack(fplist []string, ofname string) (result bool) {
 func main() {
 	args := os.Args[1:] // get the arguments
 
-	var cmd string = "pack"          // a default command
-	var ofname string = "" 		 	 // path or package name
-	var fplist []string              // list of filenames
+	var cmd string = "pack" // a default command
+	var ofname string = ""  // path or package name
+	var fplist []string     // list of filenames
 
 	if len(args) > 0 {
 		for k, v := range args {
