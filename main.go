@@ -1,7 +1,6 @@
 // Copyright 2018 Maxim R. <epiqm.github.io>
 
 // Pack or unpack files and/or directories.
-// Create or extract binary packages created with PAQ.
 package main
 
 import (

@@ -1,5 +1,9 @@
 # Paq
 
+[![Godoc Reference][godoc-img]][godoc]
+[![Build Status][ci-img]][ci]
+[![Go Report Card][goreportcard-img]][goreportcard]
+
 Pack files/directories into a single binary.
 
 ## Getting Started
@@ -102,3 +106,13 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## Author
 
 Written by [Maxim R.](https://epiqm.github.io/)
+
+
+[godoc]: http://godoc.org/github.com/epiqm/paq
+[godoc-img]: https://godoc.org/github.com/epiqm/paq?status.svg
+[ci-img]: https://travis-ci.org/epiqm/paq.svg?branch=master
+[cov-img]: https://coveralls.io/repos/github/epiqm/paqbadge.svg?branch=master
+[ci]: https://travis-ci.org/epiqm/paq
+[cov]: https://coveralls.io/github/epiqm/paq?branch=master
+[goreportcard-img]: https://goreportcard.com/badge/github.com/epiqm/paq?branch=master
+[goreportcard]: https://goreportcard.com/report/github.com/epiqm/paq?branch=master
