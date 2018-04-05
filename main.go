@@ -272,7 +272,7 @@ func Scan(fplist []string, RawPackage *Package) (result bool) {
 		}
 
 		if headerlen == finfo.Size() {
-			fmt.Sprintf("  %s", "package does not contain meta header")
+			fmt.Println("  package does not contain meta header")
 			return false
 		}
 
