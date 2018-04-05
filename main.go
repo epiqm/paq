@@ -327,14 +327,20 @@ func Scan(fplist []string, RawPackage *Package) (result bool) {
 	return true
 }
 
-func Unpack(fplist []string) (result bool) {
+func Unpack(fplist []string, ofname string) (result bool) {
 	Scan(fplist, &RawPackage) // scan the list and create meta
+
+	if len(ofname) > 0 {
+		if _, err := os.Stat(ofname); os.IsNotExist(err) {
+			os.MkdirAll(ofname, os.ModePerm);
+		}
+	}
 
 	// go through the specified files
 	for _, fa := range RawPackage.Files {
 
 		// create a file for element contents
-		fo, err := os.Create(fa.Name)
+		fo, err := os.Create(fmt.Sprintf("%s%s%s", ofname, SEP, fa.Name))
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -404,7 +410,7 @@ func main() {
 	args := os.Args[1:] // get the arguments
 
 	var cmd string = "pack"          // a default command
-	var ofname string = "package.pq" // default package name
+	var ofname string = "" 		 	 // path or package name
 	var fplist []string              // list of filenames
 
 	if len(args) > 0 {
@@ -446,18 +452,20 @@ func main() {
 		}
 
 		if cmd == "pack" {
+			if len(ofname) == 0 {
+				ofname = "package.pq"
+			}
 			if Pack(ofname, fplist) == true {
 				fmt.Println(SUCCESS)
 			} else {
-				// remove temp package
-				os.Remove(ofname)
+				os.Remove(ofname) // remove temp package
 			}
 		} else if cmd == "scan" {
 			if Scan(fplist, &RawPackage) == true {
 				fmt.Println(SUCCESS)
 			}
 		} else if cmd == "unpack" {
-			if Unpack(fplist) == true {
+			if Unpack(fplist, ofname) == true {
 				fmt.Println(SUCCESS)
 			}
 		}
